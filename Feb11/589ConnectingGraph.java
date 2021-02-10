@@ -3,7 +3,7 @@ public class ConnectingGraph {
     * @param n: An integer
     */
 
-    public int[] father;
+    public int[] father = null;
 
     public int find(int x){
 
