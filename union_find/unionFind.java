@@ -19,7 +19,7 @@ public class unionFind {
 
         int bRoot = find(b);
 
-        if(aRoot ==bRoot){
+        if(aRoot !=bRoot){
             father[aRoot]=father[bRoot];
         }
     }
