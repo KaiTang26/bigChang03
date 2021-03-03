@@ -8,6 +8,10 @@ public class Solution {
 
         List<Integer> ans = new ArrayList<Integer>();
 
+        if(A==null || A.length==0){
+            return ans;
+        }
+
         int start = 0;
         int end = A.length-1;
 
