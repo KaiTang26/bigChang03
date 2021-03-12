@@ -53,3 +53,57 @@ public class Solution {
         return ans*ans;
     }
 }
+
+
+public class Solution2 {
+    /**
+     * @param matrix: a matrix of 0 and 1
+     * @return: an integer
+     */
+    public int maxSquare(int[][] matrix) {
+        // write your code here
+
+        if(matrix==null || matrix.length==0){
+            return 0;
+        }
+
+        int n = matrix.length;
+        int m = matrix[0].length;
+
+
+        int[][] dp = new int[2][m];
+
+        int ans = 0;
+
+
+        for(int i=0; i<n; i++){
+
+            dp[i%2][0] = matrix[i][0];
+
+            ans = Math.max(ans, dp[i%2][0]);
+
+            for(int j=1; j<m; j++){
+
+                if(i>0){
+                    if(matrix[i][j]==1){
+                        dp[i%2][j] = Math.min(Math.min(dp[(i-1)%2][j], dp[i%2][j-1]), dp[(i-1)%2][j-1])+1;
+
+                        
+                    }else{
+                        dp[i%2][j]=0;
+                    }
+                }else{
+
+                    dp[0][i] = matrix[0][i];
+                }
+
+                ans = Math.max(ans, dp[i%2][j]);
+
+                
+            }
+        }
+
+
+        return ans*ans;
+    }
+}
