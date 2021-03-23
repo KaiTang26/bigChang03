@@ -1,28 +1,39 @@
 public class Solution {
     /**
-     * @param n: An integer
-     * @return: An integer which is the first bad version.
+     * @param reader: An instance of ArrayReader.
+     * @param target: An integer
+     * @return: An integer which is the first index of target.
      */
-    public int findFirstBadVersion(int n) {
+    public int searchBigSortedArray(ArrayReader reader, int target) {
         // write your code here
 
-        int start = 1;
-        int end = n;
+        int end = 10;
+
+        while(reader.get(end)!=2147483647 &&reader.get(end)<=target){
+            end *=2;
+        }
+
+        int start = 0;
 
         while(start+1<end){
-            int mid = start + (end-start)/2;
+            int mid = start+(end-start)/2;
 
-            if(SVNRepo.isBadVersion(mid)){
+            if(reader.get(mid)>target){
                 end = mid;
+            }else if(reader.get(mid)<target){
+                start = mid;
             }else{
-                start =mid;
+                end = mid;
             }
         }
 
-        if(SVNRepo.isBadVersion(start)){
+        if(reader.get(start)==target){
             return start;
-        }else{
+        }else if(reader.get(end)==target){
             return end;
+
+        }else{
+            return -1;
         }
     }
 }
