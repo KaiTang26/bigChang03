@@ -1,38 +1,28 @@
 public class Solution {
     /**
-     * @param nums: An integer array sorted in ascending order
-     * @param target: An integer
-     * @return: An integer
+     * @param n: An integer
+     * @return: An integer which is the first bad version.
      */
-    public int lastPosition(int[] nums, int target) {
+    public int findFirstBadVersion(int n) {
         // write your code here
 
-        if(nums==null || nums.length==0){
-            return -1;
-        }
-
-        int start = 0;
-        int end = nums.length-1;
+        int start = 1;
+        int end = n;
 
         while(start+1<end){
-            int mid = start+(end-start)/2;
+            int mid = start + (end-start)/2;
 
-            if(nums[mid]>target){
+            if(SVNRepo.isBadVersion(mid)){
                 end = mid;
-            }else if(nums[mid]<target){
-                start = mid;
             }else{
-                start=mid;
+                start =mid;
             }
         }
 
-
-        if(nums[end]==target){
-            return end;
-        }else if(nums[start]==target){
+        if(SVNRepo.isBadVersion(start)){
             return start;
         }else{
-            return -1;
+            return end;
         }
     }
 }
