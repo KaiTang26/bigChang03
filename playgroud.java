@@ -1,30 +1,59 @@
 public class Solution {
     /**
-     * @param nums: a rotated sorted array
-     * @return: the minimum number in the array
+     * @param matrix: matrix, a list of lists of integers
+     * @param target: An integer
+     * @return: a boolean, indicate whether matrix contains target
      */
-    public int findMin(int[] nums) {
+    public boolean searchMatrix(int[][] matrix, int target) {
         // write your code here
-        int start = 0;
-        int end = nums.length-1;
 
-        while(start+1<end){
-            int target = nums[end];
-            int mid = start+(end-start)/2;
+        if(matrix==null || matrix.length==0){
+            return false;
+        }
 
-            if(nums[mid]>target){
-                start = mid;
-            }else if(nums[mid]<target){
-                end = mid;
-            }else{ 
-                start =mid;
+        int startRow = 0;
+        int endRow = matrix.length-1;
+
+        int row = 0;
+
+
+        while(startRow+1<endRow){
+            
+            int mid = startRow+(endRow-startRow)/2;
+
+            if(matrix[mid][0]>target){
+                endRow = mid;
+            }else{
+                startRow = mid;
             }
         }
 
-        if(nums[start]<nums[end]){
-            return nums[start];
+
+        if(matrix[endRow][0]<=target){
+            row = endRow;
         }else{
-            return nums[end];
+            row = startRow;
         }
+
+        int start = 0;
+        int end = matrix[0].length-1;
+
+        while(start+1<end){
+            int mid = start + (end-start)/2;
+
+            if(matrix[row][mid]>target){
+                end = mid;
+            }else{
+                start=mid;
+            }
+        }
+
+        if(matrix[row][start]==target || matrix[row][end]==target){
+            return true;
+        }else{
+            return false;
+        }
+
+       
     }
 }
