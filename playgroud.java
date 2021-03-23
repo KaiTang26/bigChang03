@@ -1,39 +1,30 @@
 public class Solution {
     /**
-     * @param reader: An instance of ArrayReader.
-     * @param target: An integer
-     * @return: An integer which is the first index of target.
+     * @param nums: a rotated sorted array
+     * @return: the minimum number in the array
      */
-    public int searchBigSortedArray(ArrayReader reader, int target) {
+    public int findMin(int[] nums) {
         // write your code here
-
-        int end = 10;
-
-        while(reader.get(end)!=2147483647 &&reader.get(end)<=target){
-            end *=2;
-        }
-
         int start = 0;
+        int end = nums.length-1;
 
         while(start+1<end){
+            int target = nums[end];
             int mid = start+(end-start)/2;
 
-            if(reader.get(mid)>target){
-                end = mid;
-            }else if(reader.get(mid)<target){
+            if(nums[mid]>target){
                 start = mid;
-            }else{
+            }else if(nums[mid]<target){
                 end = mid;
+            }else{ 
+                start =mid;
             }
         }
 
-        if(reader.get(start)==target){
-            return start;
-        }else if(reader.get(end)==target){
-            return end;
-
+        if(nums[start]<nums[end]){
+            return nums[start];
         }else{
-            return -1;
+            return nums[end];
         }
     }
 }
