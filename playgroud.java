@@ -16,7 +16,7 @@ public class TreeNode {
      * @param root: A Tree
      * @return: Inorder in ArrayList which contains node values.
      */
-    public List<Integer> inorderTraversal(TreeNode root) {
+    public List<Integer> postorderTraversal(TreeNode root) {
         // write your code here
 
 
@@ -26,12 +26,11 @@ public class TreeNode {
             return ans;
         }
 
-        List<Integer> left = inorderTraversal(root.left);
-
+        List<Integer> left = postorderTraversal(root.left);
         ans.addAll(left);
-        ans.add(root.val);
-        List<Integer> right = inorderTraversal(root.right);
+        List<Integer> right = postorderTraversal(root.right);
         ans.addAll(right);
+        ans.add(root.val);
 
         return ans;
 
