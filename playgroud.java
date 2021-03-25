@@ -1,59 +1,40 @@
-public class Solution {
+import java.util.ArrayList;
+import java.util.List;
+
+public class TreeNode {
+      public int val;
+      public TreeNode left, right;
+      public TreeNode(int val) {
+          this.val = val;
+          this.left = this.right = null;
+      }
+  }
+
+
+  public class Solution {
     /**
-     * @param matrix: A list of lists of integers
-     * @param target: An integer you want to search in matrix
-     * @return: An integer indicate the total occurrence of target in the given matrix
+     * @param root: A Tree
+     * @return: Inorder in ArrayList which contains node values.
      */
-    public int searchMatrix(int[][] matrix, int target) {
+    public List<Integer> inorderTraversal(TreeNode root) {
         // write your code here
 
-        int count = 0;
 
-        if(matrix==null || matrix.length==0|| matrix[0].length==0){
-            return count;
+        List<Integer> ans = new ArrayList();
+
+        if(root==null){
+            return ans;
         }
 
+        List<Integer> left = inorderTraversal(root.left);
+
+        ans.addAll(left);
+        ans.add(root.val);
+        List<Integer> right = inorderTraversal(root.right);
+        ans.addAll(right);
+
+        return ans;
 
 
-
-        for(int[] row : matrix){
-
-            if(row[0]<=target && row[row.length-1]>=target && checkTarget(row, target)){
-                count++;
-            }
-        }
-
-        return count;
-    }
-
-    public boolean checkTarget(int[] row, int target){
-        int start = 0;
-        int end = row.length-1;
-
-        while(start+1<end){
-
-            int mid = start+(end-start)/2;
-
-            if(row[mid]>target){
-                end = mid;
-            }else if(row[mid]<target){
-                start = mid;
-            }else{
-                return true;
-            }
-
-        }
-
-        if(row[start]==target){
-            return true;
-        }else if(row[end]==target){
-            return true;
-        }else{
-            return false;
-
-        }
-
-
-        
     }
 }
