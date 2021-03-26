@@ -13,27 +13,38 @@ public class TreeNode {
 
   public class Solution {
     /**
-     * @param root: A Tree
-     * @return: Inorder in ArrayList which contains node values.
+     * @param root: the root of the binary tree
+     * @return: all root-to-leaf paths
      */
-    public List<Integer> postorderTraversal(TreeNode root) {
+   
+    public List<String> binaryTreePaths(TreeNode root) {
         // write your code here
 
-
-        List<Integer> ans = new ArrayList();
+        List<String> ans = new ArrayList<>();
 
         if(root==null){
             return ans;
         }
 
-        List<Integer> left = postorderTraversal(root.left);
-        ans.addAll(left);
-        List<Integer> right = postorderTraversal(root.right);
-        ans.addAll(right);
-        ans.add(root.val);
+        List<String> left = binaryTreePaths(root.left);
+
+        List<String> right = binaryTreePaths(root.right);
+
+        for(String i: left){
+            String path = root.val+"->"+i;
+            ans.add(path);
+        }
+
+        for(String i: right){
+            String path = root.val+"->"+i;
+            ans.add(path);
+        }
+
+        if(left.size()==0 && right.size()==0){
+            ans.add(Integer.toString(root.val));
+        }
 
         return ans;
-
 
     }
 }
