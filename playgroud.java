@@ -11,27 +11,12 @@
   }
 
 
-public class Solution {
+  public class Solution {
     /**
-     * @param root: The root of binary tree.
-     * @return: An integer
+     * @param root: a root of binary tree
+     * @return: return a integer
      */
-    public int maxDepth(TreeNode root) {
+    public int diameterOfBinaryTree(TreeNode root) {
         // write your code here
-
-        return DFS(root, 0);
-
-
-    }
-
-    public int DFS(TreeNode node, int depth){
-
-        if(node==null){
-            return depth;
-        }
-
-
-        return Math.max(DFS(node.left, depth+1), DFS(node.right, depth+1));
-
     }
 }
