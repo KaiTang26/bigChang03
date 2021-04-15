@@ -1,3 +1,4 @@
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Queue;
 
@@ -11,40 +12,44 @@ class UndirectedGraphNode {
      }
     
    
-   public class Solution {
-       /**
-        * @param node: A undirected graph node
-        * @return: A undirected graph node
-        */
-       public UndirectedGraphNode cloneGraph(UndirectedGraphNode node) {
-           // write your code here
+     public class Solution {
+        
+        public UndirectedGraphNode searchNode(ArrayList<UndirectedGraphNode> graph,
+                                              Map<UndirectedGraphNode, Integer> values,
+                                              UndirectedGraphNode node,
+                                              int target) {
+            // write your code here
 
-           Queue<UndirectedGraphNode> queue = new LinkedList<>();
 
-           Map<UndirectedGraphNode, UndirectedGraphNode> map = new HashMap<>();
+            Queue<UndirectedGraphNode> queue = new LinkedList<>();
+            Set<UndirectedGraphNode> set = new HashSet<>();
 
-          // UndirectedGraphNode root = new UndirectedGraphNode(node.label);
+            queue.offer(node);
 
-           
-           queue.offer(node);
+            while(!queue.isEmpty()){
+                UndirectedGraphNode cnode = queue.poll();
+                set.add(cnode);
 
-           while(!queue.isEmpty()){
+                int value = values.get(cnode);
 
-            UndirectedGraphNode currentNode = queue.poll();
+                if(value == target){
 
-            map.put(currentNode, new UndirectedGraphNode(currentNode.label));
-
-            for( UndirectedGraphNode n : currentNode.neighbors){
-                if(!map.containsKey(n)){
-                    queue.offer(n);
+                    return cnode;
                 }
+
+
+                for(UndirectedGraphNode n : cnode.neighbors){
+
+                    if(!set.contains(n)){
+                        queue.offer(n);
+                    }
+
+                }
+
+
             }
 
-           }
 
-
-          
-
-
-       }
-   }
+            return null;
+        }
+    }
