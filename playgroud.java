@@ -1,7 +1,3 @@
-import java.util.Arrays;
-import java.util.List;
-import java.util.Queue;
-
 public class Solution {
     /**
      * @param n: An integer
@@ -11,64 +7,55 @@ public class Solution {
     public boolean validTree(int n, int[][] edges) {
         // write your code here
 
-        int numberofEdges = edges.length;
-
-        if(numberofEdges != (n-1)){
+        if(edges.length-1 != n){
             return false;
         }
 
+        UnionFind uf = new UnionFind(n);
 
-        Map<Integer, List<Integer>> map = new HashMap<>();
+        for(int i=0; i<edges.length; i++){
+
+            int[] edge = edges[i];
+
+            uf.Union(edge[0], edge[1]);
+        }
+
+        return uf.count==1;
+    }
+}
+
+class UnionFind{
+
+    public int[] fathers;
+    public int count;
+
+    public UnionFind(int n){
+        fathers = new int[n];
+
+        count = n;
 
         for(int i=0; i<n; i++){
 
-
-            map.put(i, new ArrayList<>());
-
-
+            fathers[i]=i;
         }
 
-        for(int i=0; i<numberofEdges; i++){
-            int[] edge =edges[i];
+    }
 
-            map.get(edge[0]).add(edge[1]);
-            map.get(edge[1]).add(edge[0]);
+    public int find(int x){
 
+        if(fathers[x]==x){
+            return x;
         }
+        fathers[x] = find(fathers[x]);
+        return fathers[x];
+    }
 
-
-
-
-
-
-        Queue<Integer> queue = new LinkedList<>();
-
-        Set<Integer> set = new HashSet<>();
-
-        queue.offer(0);
-        set.add(0);
-
-
-        while(!queue.isEmpty()){
-            int key = queue.poll();
-
-
-            List<Integer> values = map.get(key);
-
-            for(int i:values){
-
-
-                if(!set.contains(i)){
-                    queue.offer(i);
-                    set.add(i);
-                }
-
-            }
-
+    public void Union(int a, int b){
+        int fatherA = find(a);
+        int fatherB = find(b);
+        if(fatherA != fatherB){
+            fathers[a] = fatherB;
+            count--;
         }
-
-       
-
-        return set.size()==n;
     }
 }
