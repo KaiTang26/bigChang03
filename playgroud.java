@@ -1,61 +1,50 @@
-public class Solution {
-    /**
-     * @param n: An integer
-     * @param edges: a list of undirected edges
-     * @return: true if it's a valid tree, or false
-     */
-    public boolean validTree(int n, int[][] edges) {
-        // write your code here
+import java.util.Map;
+import java.util.Queue;
 
-        if(edges.length-1 != n){
-            return false;
+class UndirectedGraphNode {
+         int label;
+         List<UndirectedGraphNode> neighbors;
+         UndirectedGraphNode(int x) {
+            label = x;
+             neighbors = new ArrayList<UndirectedGraphNode>();
         }
+     }
+    
+   
+   public class Solution {
+       /**
+        * @param node: A undirected graph node
+        * @return: A undirected graph node
+        */
+       public UndirectedGraphNode cloneGraph(UndirectedGraphNode node) {
+           // write your code here
 
-        UnionFind uf = new UnionFind(n);
+           Queue<UndirectedGraphNode> queue = new LinkedList<>();
 
-        for(int i=0; i<edges.length; i++){
+           Map<UndirectedGraphNode, UndirectedGraphNode> map = new HashMap<>();
 
-            int[] edge = edges[i];
+          // UndirectedGraphNode root = new UndirectedGraphNode(node.label);
 
-            uf.Union(edge[0], edge[1]);
-        }
+           
+           queue.offer(node);
 
-        return uf.count==1;
-    }
-}
+           while(!queue.isEmpty()){
 
-class UnionFind{
+            UndirectedGraphNode currentNode = queue.poll();
 
-    public int[] fathers;
-    public int count;
+            map.put(currentNode, new UndirectedGraphNode(currentNode.label));
 
-    public UnionFind(int n){
-        fathers = new int[n];
+            for( UndirectedGraphNode n : currentNode.neighbors){
+                if(!map.containsKey(n)){
+                    queue.offer(n);
+                }
+            }
 
-        count = n;
+           }
 
-        for(int i=0; i<n; i++){
 
-            fathers[i]=i;
-        }
+          
 
-    }
 
-    public int find(int x){
-
-        if(fathers[x]==x){
-            return x;
-        }
-        fathers[x] = find(fathers[x]);
-        return fathers[x];
-    }
-
-    public void Union(int a, int b){
-        int fatherA = find(a);
-        int fatherB = find(b);
-        if(fatherA != fatherB){
-            fathers[a] = fatherB;
-            count--;
-        }
-    }
-}
+       }
+   }
