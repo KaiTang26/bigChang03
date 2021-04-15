@@ -1,96 +1,71 @@
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Queue;
-import java.util.logging.Level;
+import java.util.Stack;
 
-public class TreeNode {
-      public int val;
-      public TreeNode left, right;
-      public TreeNode(int val) {
-          this.val = val;
-          this.left = this.right = null;
-      }
- }
- 
+import javax.xml.crypto.dsig.keyinfo.RetrievalMethod;
 
- public class Solution {
-    /**
-     * This method will be invoked first, you should design your own algorithm 
-     * to serialize a binary tree which denote by a root node to a string which
-     * can be easily deserialized by your own "deserialize" method later.
-     */
-    public String serialize(TreeNode root) {
-        // write your code here
-        
-
-
-
-    }
-
-    /**
-     * This method will be invoked second, the argument data is what exactly
-     * you serialized at method "serialize", that means the data is not given by
-     * system, it's given by your own serialize method. So the format of data is
-     * designed by yourself, and deserialize it here as you serialize it in 
-     * "serialize" method.
-     */
-    public TreeNode deserialize(String data) {
-        // write your code here
-        if(data.equals("#")){
-            return null;
-        }
-
-        String[] dataArray = data.substring(1,data.length()-1).split(",");
-
-        TreeNode root = new TreeNode(Integer.parseInt(dataArray[0]));
-
-        Queue<TreeNode> queue = new LinkedList<>();
-
-        queue.offer(root);
-
-        TreeNode currentNode = null;
-
-        boolean isLeftNode = true;
-
-
-        for(int i=1; i<dataArray.length; i++){
-
-            String value = dataArray[i];
-
-            if(isLeftNode){
-
-                currentNode = queue.poll();
-
-                if(value.equals("#")){
-
-                    currentNode.left = null;
-
-                }else{
-
-                    TreeNode newNode = new TreeNode(Integer.parseInt(value));
-
-                    currentNode.left = newNode;
-
-                    queue.offer(newNode);
-
-                }
-
-                isLeftNode = false;
-
-            }else{
-
-                if(value.equals("#")){
-                    currentNode.right=null;
-                }else{
-                    TreeNode newNode = new TreeNode(Integer.parseInt(value));
-                    currentNode.right = newNode;
-                    queue.offer(newNode);
-                }
-                isLeftNode = true;
-
-            }
-
-        }
-
-        return root;
-
+class TreeNode {
+    public int val;
+    public TreeNode left, right;
+    public TreeNode(int val) {
+        this.val = val;
+        this.left = this.right = null;
     }
 }
+
+class ListNode {
+         int val;
+        ListNode next;
+         ListNode(int x) { val = x; }
+     }
+
+     public class Solution {
+        /**
+         * @param root the root of binary tree
+         * @return a lists of linked list
+         */
+        public List<ListNode> binaryTreeToLists(TreeNode root) {
+            // Write your code here
+
+            List<ListNode> ans = new ArrayList<>();
+
+            if(root==null){
+                return ans;
+            }
+
+            Queue<TreeNode> queue = new LinkedList<>();
+
+            queue.offer(root);
+
+            while(!queue.isEmpty()){
+                int size = queue.size();
+
+                ListNode dummy = new ListNode(-1);
+                ListNode current = dummy;
+
+                for(int i=0; i<size; i++){
+
+                    TreeNode node = queue.poll();
+
+                    current.next = new ListNode(node.val);
+
+                    if(node.left !=null){
+                        queue.offer(node.left);
+                    }
+
+                    if(node.right != null){
+                        queue.offer(node.right);
+                    }
+
+                    current = current.next;
+
+                }
+
+                ans.add(dummy.next);
+            }
+
+
+            return ans;
+        }
+    }
