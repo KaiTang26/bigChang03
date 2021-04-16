@@ -1,75 +1,72 @@
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Queue;
 
-class DirectedGraphNode {
-      int label;
-      ArrayList<DirectedGraphNode> neighbors;
-      DirectedGraphNode(int x) { label = x; neighbors = new ArrayList<DirectedGraphNode>(); }
- };
- 
+import javax.xml.namespace.QName;
+
+import jdk.nashorn.internal.ir.IdentNode;
 
 public class Solution {
-    /*
-     * @param graph: A list of Directed graph node
-     * @return: Any topological order for the given graph.
+    /**
+     * @param numCourses: a total of n courses
+     * @param prerequisites: a list of prerequisite pairs
+     * @return: true if can finish all courses or false
      */
-    public ArrayList<DirectedGraphNode> topSort(ArrayList<DirectedGraphNode> graph) {
+    public boolean canFinish(int numCourses, int[][] prerequisites) {
+        // write your code here
 
+        // indegree map
+        Map<Integer, Integer> indegree = new HashMap<>();
 
-        ArrayList<DirectedGraphNode> ans = new ArrayList<>();
-    
-        Map<DirectedGraphNode, Integer> indegree = new HashMap<>();
+        Map<Integer, List<Integer>> courseMap = new HashMap<>();
 
-        for(DirectedGraphNode n : graph){
+        for(int i=0; i<numCourses; i++){
 
-            if(!indegree.containsKey(n)){
-                indegree.put(n, 0);
-            }
-
-           for(DirectedGraphNode i: n.neighbors){
-
-                if(indegree.containsKey(i)){
-                    indegree.put(i, indegree.get(i)+1);
-                }else{
-                    indegree.put(i, 1);
-                }
-
-           }
+            indegree.put(i, 0);
+            courseMap.put(i, new ArrayList<>());
         }
 
-        Queue<DirectedGraphNode> queue = new LinkedList<>();
+        for(int[] i : prerequisites){
+            int pre = i[1];
+            int course = i[0];
+            indegree.put(course, indegree.get(course)+1);
+            courseMap.get(pre).add(course);
+        }
 
+        Queue<Integer> queue = new LinkedList<>();
 
-
-
-        for(DirectedGraphNode n : graph){
-
-            int value = indegree.get(n);
-
-            if(value==0){
-                queue.offer(n);
+        for(int k : indegree.keySet()){
+            int count = indegree.get(k);
+            if(count==0){
+                queue.offer(k);
             }
         }
+
+        Set<Integer> set = new HashSet<>();
+
 
         while(!queue.isEmpty()){
 
-            DirectedGraphNode n = queue.poll();
-            ans.add(n);
+            int c = queue.poll();
+            set.add(c);
 
-            for(DirectedGraphNode i : n.neighbors){
-
-                indegree.put(i, indegree.get(i)-1);
-
-                if(indegree.get(i)==0){
-                    queue.offer(i);
+            for(int n : courseMap.get(c)){
+                int count = indegree.get(n)-1;
+                indegree.put(n, count);
+                if(count==0 && !set.contains(n)){
+                    queue.offer(n);
                 }
             }
+
         }
 
 
-        return ans;
+
+        return set.size()==numCourses;
 
 
     }
 }
+
