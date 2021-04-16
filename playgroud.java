@@ -1,55 +1,42 @@
-
- public class ListNode {
-      int val;
-      ListNode next;
-      ListNode(int x) {
-          val = x;
-          next = null;
-      }
- }
- 
-
 public class Solution {
     /**
-     * @param l1: ListNode l1 is the head of the linked list
-     * @param l2: ListNode l2 is the head of the linked list
-     * @return: ListNode head of linked list
+     * @param A: an integer array
+     * @return: nothing
      */
-    public ListNode mergeTwoLists(ListNode l1, ListNode l2) {
+    public void sortIntegers2(int[] A) {
         // write your code here
+    }
 
-        ListNode dumy = new ListNode(-1);
-        ListNode pointer = dumy;
+    public void quickSort(int start, int end, int[] A){
 
-       
+        int left = start;
+        int right = end;
 
-        while(l1!=null && l2!=null){
+        int p = A[start];
 
-            if(l1.val>l2.val){
+        while(left<=right){
 
-                pointer.next = l2;
-                l2 = l2.next;
-
-            }else{
-
-                pointer.next =l1;
-                l1 = l1.next;
-
+            while(left<=right && A[left]<p){
+                left++;
             }
-             pointer = pointer.next;
 
+            while(left<=right && A[right]>p){
+                right--;
+            }
+
+            if(left<=right){
+                int temp = A[left];
+                A[left] = A[right];
+                A[right] = temp;
+                left++;
+                right--;
+            }
         }
 
-        if(l1!=null){
-            pointer.next = l1;
-        }
+        quickSort(start, right, A);
 
-        if(l2!=null){
-            pointer.next = l2;
-        }
+        quickSort(left, end, A);
 
-        return dumy.next;
-
-
+        
     }
 }
