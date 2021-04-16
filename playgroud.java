@@ -1,83 +1,55 @@
-import java.util.Queue;
+
+ public class ListNode {
+      int val;
+      ListNode next;
+      ListNode(int x) {
+          val = x;
+          next = null;
+      }
+ }
+ 
 
 public class Solution {
     /**
-     * @param grid: a boolean 2D matrix
-     * @return: an integer
+     * @param l1: ListNode l1 is the head of the linked list
+     * @param l2: ListNode l2 is the head of the linked list
+     * @return: ListNode head of linked list
      */
-    public int numIslands(boolean[][] grid) {
+    public ListNode mergeTwoLists(ListNode l1, ListNode l2) {
         // write your code here
 
-        int count = 0;
+        ListNode dumy = new ListNode(-1);
+        ListNode pointer = dumy;
 
-        if(grid==null || grid.length==0){
-            return count;
-        }
+       
 
-        for(int i=0; i<grid.length; i++){
+        while(l1!=null && l2!=null){
 
-            for(int j=0; j<grid[0].length; j++){
+            if(l1.val>l2.val){
 
-                if(grid[i][j]){
+                pointer.next = l2;
+                l2 = l2.next;
 
-                    BFS(i, j, grid);
-                    count++;
-                }
-            }
-        }
+            }else{
 
-        return count;
-    }
-
-
-    public void BFS(int row, int col, boolean[][] grid ){
-
-
-        int[] dRow = new int[]{-1,0,1,0};
-        int[] dCol = new int[]{0,1,0,-1};
-
-        int rowLimit = grid.length;
-        int colLimit = grid[0].length;
-
-        Record start = new Record(row, col);
-
-        Queue<Record> queue = new LinkedList<>();
-
-        queue.offer(start);
-        grid[row][col]=false;
-
-        while(!queue.isEmpty()){
-            Record r = queue.poll();
-
-        
-            for(int i=0; i<4; i++){
-
-                int dr = r.row+dRow[i];
-                int dc = r.col+dCol[i];
-
-                if(dr>=0 &&dr<rowLimit && dc>=0 && dc<colLimit){
-
-                    if(grid[dr][dc]){
-                        queue.offer(new Record(dr, dc));
-                        grid[dr][dc]=false;
-                    }
-                }
-
+                pointer.next =l1;
+                l1 = l1.next;
 
             }
+             pointer = pointer.next;
+
         }
+
+        if(l1!=null){
+            pointer.next = l1;
+        }
+
+        if(l2!=null){
+            pointer.next = l2;
+        }
+
+        return dumy.next;
+
+
     }
-}
-
-
-class Record{
-    int row;
-    int col;
-
-    public Record(int row, int col){
-        this.row = row;
-        this.col = col;
-    }
-
-
 }
