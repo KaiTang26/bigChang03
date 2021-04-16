@@ -1,42 +1,71 @@
+import java.util.concurrent.ArrayBlockingQueue;
+
+public class Interval {
+      int start, end;
+      Interval(int start, int end) {
+          this.start = start;
+          this.end = end;
+      }
+  }
+ 
+
 public class Solution {
     /**
-     * @param A: an integer array
-     * @return: nothing
+     * @param airplanes: An interval array
+     * @return: Count of airplanes are in the sky.
      */
-    public void sortIntegers2(int[] A) {
+    public int countOfAirplanes(List<Interval> airplanes) {
         // write your code here
-    }
+        List<Event> events = new ArrayList<>();
 
-    public void quickSort(int start, int end, int[] A){
+        for(Integer I : airplanes){
 
-        int left = start;
-        int right = end;
-
-        int p = A[start];
-
-        while(left<=right){
-
-            while(left<=right && A[left]<p){
-                left++;
-            }
-
-            while(left<=right && A[right]>p){
-                right--;
-            }
-
-            if(left<=right){
-                int temp = A[left];
-                A[left] = A[right];
-                A[right] = temp;
-                left++;
-                right--;
-            }
+            events.add(new Event(I.start, false));
+            events.add(new Event(I.end, true));
         }
 
-        quickSort(start, right, A);
+        Collections.sort(events, (a,b)->{
 
-        quickSort(left, end, A);
+            if(a.time==b.time){
+                if((a.isLanding && b.isLanding)||(!a.isLanding && !b.isLanding)){
+                    return 0;
+                }else if(a.isLanding ){
+                    return -1;
+                }else{
+                    return  1;
+                }
+            }
+            return a.time-b.time;
 
-        
+        });
+
+        int count = 0;
+        int ans = Integer.MIN_VALUE;
+
+
+        for(Event e: events){
+
+            if(!e.isLanding){
+                count +=1;
+            }else{
+                count -=1;
+            }
+
+            ans = Math.max(cout, ans);
+
+           
+        }
+
+        return ans;
+    }
+}
+
+class Event{
+    int time;
+    boolean isLanding;
+
+    public Event(int time, boolean isLanding){
+        this.time = time;
+        this.isLanding = isLanding;
     }
 }
