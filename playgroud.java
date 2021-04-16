@@ -1,72 +1,83 @@
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import java.util.Queue;
-
-import javax.xml.namespace.QName;
-
-import jdk.nashorn.internal.ir.IdentNode;
 
 public class Solution {
     /**
-     * @param numCourses: a total of n courses
-     * @param prerequisites: a list of prerequisite pairs
-     * @return: true if can finish all courses or false
+     * @param grid: a boolean 2D matrix
+     * @return: an integer
      */
-    public boolean canFinish(int numCourses, int[][] prerequisites) {
+    public int numIslands(boolean[][] grid) {
         // write your code here
 
-        // indegree map
-        Map<Integer, Integer> indegree = new HashMap<>();
+        int count = 0;
 
-        Map<Integer, List<Integer>> courseMap = new HashMap<>();
-
-        for(int i=0; i<numCourses; i++){
-
-            indegree.put(i, 0);
-            courseMap.put(i, new ArrayList<>());
+        if(grid==null || grid.length==0){
+            return count;
         }
 
-        for(int[] i : prerequisites){
-            int pre = i[1];
-            int course = i[0];
-            indegree.put(course, indegree.get(course)+1);
-            courseMap.get(pre).add(course);
-        }
+        for(int i=0; i<grid.length; i++){
 
-        Queue<Integer> queue = new LinkedList<>();
+            for(int j=0; j<grid[0].length; j++){
 
-        for(int k : indegree.keySet()){
-            int count = indegree.get(k);
-            if(count==0){
-                queue.offer(k);
-            }
-        }
+                if(grid[i][j]){
 
-        Set<Integer> set = new HashSet<>();
-
-
-        while(!queue.isEmpty()){
-
-            int c = queue.poll();
-            set.add(c);
-
-            for(int n : courseMap.get(c)){
-                int count = indegree.get(n)-1;
-                indegree.put(n, count);
-                if(count==0 && !set.contains(n)){
-                    queue.offer(n);
+                    BFS(i, j, grid);
+                    count++;
                 }
             }
-
         }
 
+        return count;
+    }
 
 
-        return set.size()==numCourses;
+    public void BFS(int row, int col, boolean[][] grid ){
 
 
+        int[] dRow = new int[]{-1,0,1,0};
+        int[] dCol = new int[]{0,1,0,-1};
+
+        int rowLimit = grid.length;
+        int colLimit = grid[0].length;
+
+        Record start = new Record(row, col);
+
+        Queue<Record> queue = new LinkedList<>();
+
+        queue.offer(start);
+        grid[row][col]=false;
+
+        while(!queue.isEmpty()){
+            Record r = queue.poll();
+
+        
+            for(int i=0; i<4; i++){
+
+                int dr = r.row+dRow[i];
+                int dc = r.col+dCol[i];
+
+                if(dr>=0 &&dr<rowLimit && dc>=0 && dc<colLimit){
+
+                    if(grid[dr][dc]){
+                        queue.offer(new Record(dr, dc));
+                        grid[dr][dc]=false;
+                    }
+                }
+
+
+            }
+        }
     }
 }
 
+
+class Record{
+    int row;
+    int col;
+
+    public Record(int row, int col){
+        this.row = row;
+        this.col = col;
+    }
+
+
+}
