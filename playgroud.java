@@ -1,71 +1,43 @@
-import java.util.concurrent.ArrayBlockingQueue;
-
-public class Interval {
-      int start, end;
-      Interval(int start, int end) {
-          this.start = start;
-          this.end = end;
-      }
-  }
- 
+import java.util.HashSet;
+import java.util.PriorityQueue;
+import java.util.concurrent.PriorityBlockingQueue;
 
 public class Solution {
     /**
-     * @param airplanes: An interval array
-     * @return: Count of airplanes are in the sky.
+     * @param n: An integer
+     * @return: return a  integer as description.
      */
-    public int countOfAirplanes(List<Interval> airplanes) {
+    public int nthUglyNumber(int n) {
         // write your code here
-        List<Event> events = new ArrayList<>();
+        
+        PriorityQueue<Long> queue = new PriorityQueue<>();
 
-        for(Integer I : airplanes){
+        Set<Long> set = new HashSet<>();
 
-            events.add(new Event(I.start, false));
-            events.add(new Event(I.end, true));
-        }
+        int[] seeds = new int[]{2,3,5};
 
-        Collections.sort(events, (a,b)->{
+        queue.add(Long.valueOf(1));
+        set.add(Long.valueOf(1));
 
-            if(a.time==b.time){
-                if((a.isLanding && b.isLanding)||(!a.isLanding && !b.isLanding)){
-                    return 0;
-                }else if(a.isLanding ){
-                    return -1;
-                }else{
-                    return  1;
+        for(int i=0; i<n; i++){
+
+            Long value = queue.poll();
+            if(i==(n-1)){
+                return value.intValue();
+            }
+
+            for(int s : seeds){
+
+                Long newValue = value*s;
+
+                if(!set.contains(newValue)){
+                    set.add(newValue);
+
+                    queue.add(newValue);
                 }
             }
-            return a.time-b.time;
-
-        });
-
-        int count = 0;
-        int ans = Integer.MIN_VALUE;
-
-
-        for(Event e: events){
-
-            if(!e.isLanding){
-                count +=1;
-            }else{
-                count -=1;
-            }
-
-            ans = Math.max(cout, ans);
-
-           
         }
 
-        return ans;
-    }
-}
-
-class Event{
-    int time;
-    boolean isLanding;
-
-    public Event(int time, boolean isLanding){
-        this.time = time;
-        this.isLanding = isLanding;
+        return 0;
     }
 }
