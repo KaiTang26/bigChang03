@@ -1,43 +1,72 @@
-import java.util.HashSet;
 import java.util.PriorityQueue;
-import java.util.concurrent.PriorityBlockingQueue;
 
 public class Solution {
     /**
-     * @param n: An integer
-     * @return: return a  integer as description.
+     * @param arrays: k sorted integer arrays
+     * @return: a sorted array
      */
-    public int nthUglyNumber(int n) {
+    public int[] mergekSortedArrays(int[][] arrays) {
         // write your code here
-        
-        PriorityQueue<Long> queue = new PriorityQueue<>();
 
-        Set<Long> set = new HashSet<>();
+        if(arrays==null || arrays.length==0){
 
-        int[] seeds = new int[]{2,3,5};
+            return null;
+        }
 
-        queue.add(Long.valueOf(1));
-        set.add(Long.valueOf(1));
+        int limit = 0;
 
-        for(int i=0; i<n; i++){
 
-            Long value = queue.poll();
-            if(i==(n-1)){
-                return value.intValue();
+        PriorityQueue<Record> queue = new PriorityQueue<>((a,b)->{
+            return a.val-b.val;
+        });
+
+        for(int i=0; i<arrays.length; i++){
+            limit += arrays[i].length;
+            if(arrays[i].length>0){
+                Record r = new Record(i, 0, arrays[i][0]);
+                queue.add(r);
             }
+            
+        }
 
-            for(int s : seeds){
 
-                Long newValue = value*s;
+        int[] ans = new int[limit];
 
-                if(!set.contains(newValue)){
-                    set.add(newValue);
+        if(limit==0){
+            return ans;
+        }
+    
+        int index = 0;
 
-                    queue.add(newValue);
-                }
+
+        while(!queue.isEmpty()){
+            Record r = queue.poll();
+            if(index<limit){
+                ans[index]= r.val;
+            }
+            
+            index++;
+
+            if(r.col+1<arrays[r.row].length){
+                queue.add(new Record(r.row, r.col+1, arrays[r.row][r.col+1]));
             }
         }
 
-        return 0;
+        return ans;
+
+        
+    }
+}
+
+
+class Record{
+    public int row;
+    public int col;
+    public int val;
+
+    public Record(int row, int col, int val){
+        this.row = row;
+        this.col = col;
+        this.val = val;
     }
 }
