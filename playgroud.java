@@ -1,39 +1,48 @@
 import java.awt.List;
 
 public class Solution {
-    /**
-     * @param nums: A set of numbers.
-     * @return: A list of lists. All valid subsets.
+    /*
+     * @param nums: A list of integers.
+     * @return: A list of permutations.
      */
-    public List<List<Integer>> subsetsWithDup(int[] nums) {
+    public List<List<Integer>> permute(int[] nums) {
         // write your code here
-
-		Arrays.sort(nums);
 
 		List<List<Integer>> ans = new ArrayList<>();
 
-		backtrack(0, nums, new ArrayList<Integer>(), ans);
+		Arrays.sort(nums);
+
+		DFS(nums, new boolean[nums.length], new ArrayList<Integer>(), ans);
 
 		return ans;
     }
 
-	private void backtrack(int offset, int[] nums, List<Integer> subset, List<List<Integer>> ans){
 
-		ans.add(new ArrayList<Integer>(subset));
+	private void DFS(int[] nums, boolean[] visit, List<Integer> permu, List<List<Integer>> ans){
 
-		for(int i=offset; i<nums.length; i++){
+		// nums should sorted
+		if(permu.size()==nums.length){
+			ans.add(new ArrayList<Integer>(permu));
+			return;
+		}
 
-			if(i!=offset && nums[i]==nums[i-1]){
+		for(int i=0; i<nums.length; i++){
+
+			if(visit[i]){
 				continue;
 			}
 
-			subset.add(nums[i]);
+			// avoid duplicated permutaions
+			if(i>0 && nums[i]==nums[i-1]&& !visit[i-1]){
+				continue;
+			}
 
-				backtrack(i+1, nums, subset, ans);
+			permu.add(nums[i]);
+			visit[i] = true;
+			DFS(nums, visit, permu, ans);
+			visit[i] =false;
+			permu.remove(permu.size()-1);
 
-				subset.remove(subset.size()-1);
-
-			
 		}
 	}
 }
