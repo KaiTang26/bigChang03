@@ -1,72 +1,60 @@
-import java.util.PriorityQueue;
-
 public class Solution {
     /**
-     * @param arrays: k sorted integer arrays
-     * @return: a sorted array
+     * @param source: 
+     * @param target: 
+     * @return: return the index
      */
-    public int[] mergekSortedArrays(int[][] arrays) {
-        // write your code here
+    public int strStr(String source, String target) {
+        // Write your code here
 
-        if(arrays==null || arrays.length==0){
+		int base = 100000;
 
-            return null;
-        }
+		int seed = 31;
 
-        int limit = 0;
+		int targetLen = target.length();
 
+		int power = 0;
 
-        PriorityQueue<Record> queue = new PriorityQueue<>((a,b)->{
-            return a.val-b.val;
-        });
+		for(int i=0; i<targetLen; i++){
+			power = (power*31)%base;
+		}
 
-        for(int i=0; i<arrays.length; i++){
-            limit += arrays[i].length;
-            if(arrays[i].length>0){
-                Record r = new Record(i, 0, arrays[i][0]);
-                queue.add(r);
-            }
-            
-        }
+		int targetValue = 0;
+
+		for(int i=0; i<targetLen; i++){
+			targetValue = (targetLen*seed+target.charAt[i])%base;
+		}
 
 
-        int[] ans = new int[limit];
-
-        if(limit==0){
-            return ans;
-        }
-    
-        int index = 0;
+		int hashValue = 0;
 
 
-        while(!queue.isEmpty()){
-            Record r = queue.poll();
-            if(index<limit){
-                ans[index]= r.val;
-            }
-            
-            index++;
+		for(int i =0; i<source.length(); i++){
 
-            if(r.col+1<arrays[r.row].length){
-                queue.add(new Record(r.row, r.col+1, arrays[r.row][r.col+1]));
-            }
-        }
+			hashValue = (hashValue*seed+source.charAt(i))%base;
 
-        return ans;
+			if(i>=targetLen){
 
-        
+				hashValue = hashValue -(source.charAt(i-targetLen)*power)%base;
+
+				if(hashValue<0){
+					hashValue +=base;
+				}
+			}
+
+			if(hashValue==targetLen && target.equals(source.substring(i-targetLen+1, i+1))){
+				return i-targetLen+1;
+			}
+
+
+		}
+
+		return -1;
+
+		
+
+		
     }
-}
 
 
-class Record{
-    public int row;
-    public int col;
-    public int val;
-
-    public Record(int row, int col, int val){
-        this.row = row;
-        this.col = col;
-        this.val = val;
-    }
 }
