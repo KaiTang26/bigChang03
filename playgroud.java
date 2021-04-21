@@ -1,60 +1,35 @@
+import java.awt.List;
+import java.util.ArrayList;
+
 public class Solution {
     /**
-     * @param source: 
-     * @param target: 
-     * @return: return the index
+     * @param nums: A set of numbers
+     * @return: A list of lists
      */
-    public int strStr(String source, String target) {
-        // Write your code here
+    public List<List<Integer>> subsets(int[] nums) {
+        // write your code here
 
-		int base = 100000;
+		List<List<Integer>> ans = new ArrayList<>();
 
-		int seed = 31;
-
-		int targetLen = target.length();
-
-		int power = 0;
-
-		for(int i=0; i<targetLen; i++){
-			power = (power*31)%base;
+		if(nums==null){
+			return ans;
 		}
 
-		int targetValue = 0;
+		backtracking(0, nums, new ArrayList<>(), ans);
 
-		for(int i=0; i<targetLen; i++){
-			targetValue = (targetLen*seed+target.charAt[i])%base;
-		}
+		return ans;
 
-
-		int hashValue = 0;
-
-
-		for(int i =0; i<source.length(); i++){
-
-			hashValue = (hashValue*seed+source.charAt(i))%base;
-
-			if(i>=targetLen){
-
-				hashValue = hashValue -(source.charAt(i-targetLen)*power)%base;
-
-				if(hashValue<0){
-					hashValue +=base;
-				}
-			}
-
-			if(hashValue==targetLen && target.equals(source.substring(i-targetLen+1, i+1))){
-				return i-targetLen+1;
-			}
-
-
-		}
-
-		return -1;
-
-		
-
-		
     }
 
+	private void backtracking(int offset, int[] nums, List<Integer> subset, List<ArraryList<Integer>> ans){
 
+		ans.add(new ArraryList<Integer>(subset));
+
+		for(int i=offset; i<nums.length; i++){
+
+			subset.add(nums[i]);
+			backtracking(i+1, nums, subset, ans);
+			subset.remove(subset.size()-1);
+		}
+	}
 }
