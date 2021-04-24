@@ -14,37 +14,43 @@ public class ListNode {
  
  public class Solution {
     /**
-     * @param str: An array of char
-     * @param offset: An integer
-     * @return: nothing
+     * @param A: sorted integer array A
+     * @param B: sorted integer array B
+     * @return: A new sorted integer array
      */
-    public void rotateString(char[] str, int offset) {
+    public int[] mergeSortedArray(int[] A, int[] B) {
         // write your code here
 
-        if(str==null || str.length==0){
-            return;
+        int lenA = A.length;
+        int lenB = B.length;
+        int[] ans = new int[lenA+lenB];
+        int index = 0;
+        int iA = 0;
+        int iB = 0;
+
+        while(iA<lenA && iB<lenB){
+            if(A[iA]>B[iB]){
+                ans[index] = B[iB];
+                iB++;
+            }else{
+                ans[index] = A[iA];
+                iA++;
+            }
+            index++;
         }
 
-        offset = offset%str.length;
-
-
-        reverse(str, 0, str.length-offset-1);
-        reverse(str, str.length-offset, str.length-1);
-        reverse(str, 0, str.length-1);
-    }
-
-    private void reverse(char[] str, int start, int end){
-
-        int left = start;
-        int right = end;
-
-        while(left<right){
-            
-            char temp = str[right];
-            str[right] = str[left];
-            str[left] = temp;
-            left++;
-            right--;
+        while(iA<lenA){
+            ans[index] = A[iA];
+            iA++;
+            index++;
         }
+
+        while(iB<lenB){
+            ans[index] = B[iB];
+            iB++;
+            index++;
+        }
+
+        return ans;
     }
 }
