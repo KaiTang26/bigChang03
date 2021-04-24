@@ -13,81 +13,36 @@ public class ListNode {
 
  public class Solution {
     /**
-     * @param head: The head of linked list.
-     * @return: nothing
+     * @param head: the List
+     * @param k: rotate to the right k places
+     * @return: the list after rotation
      */
-    public void reorderList(ListNode head) {
+    public ListNode rotateRight(ListNode head, int k) {
         // write your code here
 
-        ListNode midHead = findMiddNext(head);
+        ListNode cur = head;
+        int len = 1;
 
-        ListNode reversedMidHead = reverseList(midHead);
-
-        ListNode dummy = new ListNode(-1);
-        
-        ListNode cur = dummy;
-
-        boolean isleft = true;
-
-        while(head!=null && reversedMidHead !=null){
-
-            if(isleft){
-                cur.next = head;
-                head = head.next;
-            }else{
-                cur.next = reversedMidHead;
-                reversedMidHead = reversedMidHead.next;
-            }
-
-            isleft = !isleft;
+        while(cur.next!=null){
+            len++;
             cur = cur.next;
         }
 
-        if(head !=null){
-            cur.next =head;
+        cur.next = head;
+
+        ListNode newTail = head;
+
+        for(int i=0; i<(len-k%len -1); i++){
+            newTail = newTail.next;
         }
 
-        if(reversedMidHead !=null){
-            cur.next = reversedMidHead;
-        }
+        ListNode newHead = newTail.next;
 
-        head = dummy.next;
+        newTail.next = null;
+
+        return newHead;
+
     }
 
-    public ListNode findMiddNext(ListNode head){
-
-        ListNode dummy = new ListNode(-1);
-        dummy.next = head;
-
-        ListNode slow = dummy;
-        ListNode fast = dummy;
-
-        while(fast!=null && fast.next!=null){
-            slow = slow.next;
-            fast = fast.next.next;
-        }
-
-        ListNode midHead = slow.next;
-        slow.next = null;
-        return midHead;
-    }
-
-    public ListNode reverseList(ListNode head){
-
-        ListNode pre = null;
-
-        ListNode cur = head;
-
-        while(cur!=null){
-
-            ListNode temp = cur.next;
-            cur.next = pre;
-            pre = cur;
-            cur =temp;
-
-        }
-
-        return pre;
-
-    }
+    
 }
