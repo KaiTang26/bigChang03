@@ -11,38 +11,40 @@ public class ListNode {
  }
 
 
+ 
  public class Solution {
     /**
-     * @param head: the List
-     * @param k: rotate to the right k places
-     * @return: the list after rotation
+     * @param str: An array of char
+     * @param offset: An integer
+     * @return: nothing
      */
-    public ListNode rotateRight(ListNode head, int k) {
+    public void rotateString(char[] str, int offset) {
         // write your code here
 
-        ListNode cur = head;
-        int len = 1;
-
-        while(cur.next!=null){
-            len++;
-            cur = cur.next;
+        if(str==null || str.length==0){
+            return;
         }
 
-        cur.next = head;
+        offset = offset%str.length;
 
-        ListNode newTail = head;
 
-        for(int i=0; i<(len-k%len -1); i++){
-            newTail = newTail.next;
-        }
-
-        ListNode newHead = newTail.next;
-
-        newTail.next = null;
-
-        return newHead;
-
+        reverse(str, 0, str.length-offset-1);
+        reverse(str, str.length-offset, str.length-1);
+        reverse(str, 0, str.length-1);
     }
 
-    
+    private void reverse(char[] str, int start, int end){
+
+        int left = start;
+        int right = end;
+
+        while(left<right){
+            
+            char temp = str[right];
+            str[right] = str[left];
+            str[left] = temp;
+            left++;
+            right--;
+        }
+    }
 }
