@@ -1,48 +1,60 @@
-import java.awt.List;
 
-public class Solution {
-    /*
-     * @param nums: A list of integers.
-     * @return: A list of permutations.
+ public class ListNode {
+      int val;
+     ListNode next;
+      ListNode(int x) {
+          val = x;
+          next = null;
+      }
+ }
+
+
+ public class Solution {
+    /**
+     * @param head: ListNode head is the head of the linked list 
+     * @param m: An integer
+     * @param n: An integer
+     * @return: The head of the reversed ListNode
      */
-    public List<List<Integer>> permute(int[] nums) {
+    public ListNode reverseBetween(ListNode head, int m, int n) {
         // write your code here
 
-		List<List<Integer>> ans = new ArrayList<>();
 
-		Arrays.sort(nums);
+        ListNode pre = null;
+        ListNode cur = head;
 
-		DFS(nums, new boolean[nums.length], new ArrayList<Integer>(), ans);
+        while(m>1){
+            pre = cur;
+            cur = cur.next;
+            m--;
+            n--;
+        }
 
-		return ans;
+        ListNode tail = cur;
+        ListNode con = pre;
+
+
+
+        for(int i=0; i<n; i++){
+            ListNode temp = cur.next;
+            cur.next = pre;
+            pre = cur;
+            cur = temp;
+
+        }
+
+
+        if(con==null){
+            head = pre;
+        }else{
+            con.next = pre;
+        }
+        
+        tail.next = cur;
+
+
+        return head;
+
+        
     }
-
-
-	private void DFS(int[] nums, boolean[] visit, List<Integer> permu, List<List<Integer>> ans){
-
-		// nums should sorted
-		if(permu.size()==nums.length){
-			ans.add(new ArrayList<Integer>(permu));
-			return;
-		}
-
-		for(int i=0; i<nums.length; i++){
-
-			if(visit[i]){
-				continue;
-			}
-
-			// avoid duplicated permutaions
-			if(i>0 && nums[i]==nums[i-1]&& !visit[i-1]){
-				continue;
-			}
-
-			permu.add(nums[i]);
-			visit[i] = true;
-			DFS(nums, visit, permu, ans);
-			visit[i] =false;
-			permu.remove(permu.size()-1);
-
-		}
-	}
 }
