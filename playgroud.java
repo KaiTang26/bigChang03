@@ -1,5 +1,7 @@
+import jdk.internal.net.http.LineSubscriberAdapter;
+import jdk.nashorn.internal.ir.LiteralNode;
 
- public class ListNode {
+public class ListNode {
       int val;
      ListNode next;
       ListNode(int x) {
@@ -11,50 +13,25 @@
 
  public class Solution {
     /**
-     * @param head: ListNode head is the head of the linked list 
-     * @param m: An integer
-     * @param n: An integer
-     * @return: The head of the reversed ListNode
+     * @param head: a ListNode
+     * @return: a ListNode
      */
-    public ListNode reverseBetween(ListNode head, int m, int n) {
-        // write your code here
-
-
-        ListNode pre = null;
-        ListNode cur = head;
-
-        while(m>1){
-            pre = cur;
-            cur = cur.next;
-            m--;
-            n--;
-        }
-
-        ListNode tail = cur;
-        ListNode con = pre;
-
-
-
-        for(int i=0; i<n; i++){
-            ListNode temp = cur.next;
-            cur.next = pre;
-            pre = cur;
-            cur = temp;
-
-        }
-
-
-        if(con==null){
-            head = pre;
-        }else{
-            con.next = pre;
-        }
+    public ListNode swapNodes(ListNode head, ListNode preNode1, ListNode preNode2) {
         
-        tail.next = cur;
+        ListNode dummy = new ListNode(-1);
+        dummy.next = head;
 
+        ListNode node1 = preNode1.next;
+        ListNode node2 = preNode2.next;
 
-        return head;
+        preNode1.next = node2;
+        preNode2.next = node1;
 
-        
+        ListNode temp = node2.next;
+        node2.next = node1.next;
+        node1.next = temp;
+
+        return dummy.next;
+
     }
 }
