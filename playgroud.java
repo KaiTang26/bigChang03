@@ -14,43 +14,32 @@ public class ListNode {
  
  public class Solution {
     /**
-     * @param A: sorted integer array A
-     * @param B: sorted integer array B
-     * @return: A new sorted integer array
+     * @param nums: The integer array you should partition
+     * @param k: An integer
+     * @return: The index after partition
      */
-    public int[] mergeSortedArray(int[] A, int[] B) {
+    public void partitionArray(int[] nums, int k) {
         // write your code here
 
-        int lenA = A.length;
-        int lenB = B.length;
-        int[] ans = new int[lenA+lenB];
-        int index = 0;
-        int iA = 0;
-        int iB = 0;
+        int left = 0;
+        int right = nums.length-1;
 
-        while(iA<lenA && iB<lenB){
-            if(A[iA]>B[iB]){
-                ans[index] = B[iB];
-                iB++;
-            }else{
-                ans[index] = A[iA];
-                iA++;
+        while(left<=right){
+
+            while(left<=right && nums[left]<k){
+                left++;
+
             }
-            index++;
-        }
 
-        while(iA<lenA){
-            ans[index] = A[iA];
-            iA++;
-            index++;
-        }
+            while(left<=right && nums[right]>=k){
+                right--;
+            }
 
-        while(iB<lenB){
-            ans[index] = B[iB];
-            iB++;
-            index++;
+            if(left<=right){
+                int temp = nums[right];
+                nums[right] = nums[left];
+                nums[left] = temp;
+            }
         }
-
-        return ans;
     }
 }
