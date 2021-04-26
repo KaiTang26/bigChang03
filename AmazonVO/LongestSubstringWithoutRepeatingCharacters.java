@@ -10,21 +10,37 @@ public class Solution {
         * Explanation: The answer is "abc", with the length of 3. 
         */
 
-        char[] chars = s.toCharArray();
-        Set<Character> isRepeat = new HashSet<>();
+        // char[] chars = s.toCharArray();
+        // Set<Character> isRepeat = new HashSet<>();
+        // int j = 0;
+        // int ans = 0;
+        // for(int i=0; i<chars.length; i++){
+        //     while(j<chars.length){
+        //         if(isRepeat.add(chars[j])){
+        //             ans = Math.max(isRepeat.size(), ans);
+        //             j++;
+        //         }else{
+        //             isRepeat.remove(chars[i]);
+        //             break;
+        //         }
+        //     }
+        // }
+        // return ans;
+
+
         int j = 0;
-        int ans = 0;
-        for(int i=0; i<chars.length; i++){
-            while(j<chars.length){
-                if(isRepeat.add(chars[j])){
-                    ans = Math.max(isRepeat.size(), ans);
+        for(int i=0; i<n; i++){
+            while(j<n){
+                if(满足条件){
                     j++;
+                    更新j的条件
                 }else{
-                    isRepeat.remove(chars[i]);
+                    不满足条件
                     break;
                 }
             }
         }
-        return ans;
+
+
     }
 }

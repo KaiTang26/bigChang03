@@ -1,45 +1,111 @@
-import jdk.internal.net.http.LineSubscriberAdapter;
-import jdk.nashorn.internal.ir.LiteralNode;
+import java.util.HashMap;
 
-public class ListNode {
-      int val;
-     ListNode next;
-      ListNode(int x) {
-          val = x;
-          next = null;
-      }
- }
+public class Trie {
 
+    private TrieNode root;
+    public Trie() {
+        // do intialization if necessary
 
- 
- public class Solution {
-    /**
-     * @param nums: The integer array you should partition
-     * @param k: An integer
-     * @return: The index after partition
+        this.root = new TrieNode();
+    }
+
+    /*
+     * @param word: a word
+     * @return: nothing
      */
-    public void partitionArray(int[] nums, int k) {
+    public void insert(String word) {
         // write your code here
 
-        int left = 0;
-        int right = nums.length-1;
+        TrieNode current = this.root;
 
-        while(left<=right){
+        HashMap<Character, TrieNode> children = current.children;
 
-            while(left<=right && nums[left]<k){
-                left++;
+        char[] chars = word.toCharArray();
 
+        for(int i=0; i<chars.length; i++){
+            char c = chars[i];
+            if(!children.containsKey(c)){
+                TrieNode node = new TrieNode(c);
+                children.put(c, node);
+                current = node;
+            }else{
+                current = children.get(c);
+            }
+            children = current.children;
+
+            if(i==chars.length-1){
+                current.isWord = true;
             }
 
-            while(left<=right && nums[right]>=k){
-                right--;
-            }
-
-            if(left<=right){
-                int temp = nums[right];
-                nums[right] = nums[left];
-                nums[left] = temp;
-            }
         }
+    }
+
+    /*
+     * @param word: A string
+     * @return: if the word is in the trie.
+     */
+    public boolean search(String word) {
+        // write your code here
+
+        TrieNode node = this.helper(word);
+
+        if(node==null){
+            return false;
+        }
+
+        return node.isWord;
+    }
+
+    /*
+     * @param prefix: A string
+     * @return: if there is any word in the trie that starts with the given prefix.
+     */
+    public boolean startsWith(String prefix) {
+        // write your code here
+        TrieNode node = this.helper(prefix);
+
+        if(node==null){
+            return false;
+        }
+
+        return true;
+    }
+
+    private TrieNode helper(String word){
+
+        TrieNode current = this.root;
+        HashMap<Character, TrieNode> children = current.children;
+
+        char[] charArray = word.toCharArray();
+
+        for(int i=0; i<charArray.length; i++){
+
+            char c = charArray[i];
+
+            if(children.containsKey(c)){
+                current = children.get(c);
+                children = current.children;
+            }else{
+                return null;
+            }
+
+        }
+        return current;
+    }
+}
+
+class TrieNode{
+    public char content;
+    public HashMap<Character, TrieNode> children;
+    public boolean isWord;
+
+    public TrieNode(){
+        this.children = new HashMap<>();
+    }
+
+    public TrieNode(char c){
+        this.content = c;
+        this.children = new HashMap<>();
+        this.isWord = false;
     }
 }
